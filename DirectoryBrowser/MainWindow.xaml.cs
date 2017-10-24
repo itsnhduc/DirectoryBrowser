@@ -38,7 +38,10 @@ namespace DirectoryBrowser
             {
                 _model.CurrentChildren = item.Children;
 
-                _model.History.Insert(0, item.GetFullPath());
+                if (_model.Recent.Where(path => path == item.GetFullPath()).Count() == 0)
+                {
+                    _model.Recent.Insert(0, item.GetFullPath());
+                }
 
                 item.LoadChildren();
 
@@ -56,12 +59,12 @@ namespace DirectoryBrowser
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
         {
-            // navigate to directory (from history)
+            // wip: navigate to directory (from history)
         }
 
         private void ForwardBtn_Click(object sender, RoutedEventArgs e)
         {
-            // navigate to directory (from history)
+            // wip: navigate to directory (from history)
         }
 
         private void HomeBtn_Click(object sender, RoutedEventArgs e)
@@ -81,10 +84,11 @@ namespace DirectoryBrowser
             expandedItem.LoadChildren();
         }
 
-        private void HistoryPanel_MouseUp(object sender, MouseButtonEventArgs e)
+        private void RecentPanel_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ListView selectedItem = sender as ListView;
             _model.CurrentPath = selectedItem.SelectedItem as string;
+            _navigateTo(_model.HomeDirectory.SearchRelativePath(_model.CurrentPath));
         }
 
         private void Explorer_MouseDoubleClick(object sender, MouseButtonEventArgs e)

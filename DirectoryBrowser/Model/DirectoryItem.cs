@@ -53,8 +53,10 @@ namespace DirectoryBrowser
         {
             DirectoryItem homeItem = new DirectoryItem(HOME_NAME, null, ItemType.Directory);
             homeItem.Children.Clear();
-            homeItem.Children.Add(new DirectoryItem("C:", homeItem, ItemType.Directory));
-            homeItem.Children.Add(new DirectoryItem("D:", homeItem, ItemType.Directory));
+            foreach (DriveInfo drive in DriveInfo.GetDrives())
+            {
+                homeItem.Children.Add(new DirectoryItem(drive.Name.Replace("\\", string.Empty), homeItem, ItemType.Directory));
+            }
             return homeItem;
         }
 
@@ -98,16 +100,23 @@ namespace DirectoryBrowser
             {
                 if (dirName != string.Empty)
                 {
-                    var filteredChildren = result.Children.Where(child => {
-                        return child.Name == dirName;
-                    });
-                    if (filteredChildren.Count() > 0)
+                    if (dirName == HOME_NAME && Name == HOME_NAME)
                     {
-                        result = filteredChildren.First();
+                        return this;
                     }
                     else
                     {
-                        return null;
+                        var filteredChildren = result.Children.Where(child => {
+                            return child.Name == dirName;
+                        });
+                        if (filteredChildren.Count() > 0)
+                        {
+                            result = filteredChildren.First();
+                        }
+                        else
+                        {
+                            return null;
+                        }
                     }
                 }
             }

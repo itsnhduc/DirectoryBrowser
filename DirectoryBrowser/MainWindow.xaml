@@ -58,7 +58,7 @@
                 </TreeView>
 
                 <Border BorderBrush="LightGray" BorderThickness="0 0 1 0"/>
-                <ListView x:Name="HistoryPanel" Grid.Column="2" ItemsSource="{Binding History}" MouseUp="HistoryPanel_MouseUp" BorderBrush="LightGray" BorderThickness="1,0,0,0">
+                <ListView x:Name="RecentPanel" Grid.Column="2" ItemsSource="{Binding Recent}" MouseUp="RecentPanel_MouseUp" BorderBrush="LightGray" BorderThickness="1,0,0,0">
                     <ListView.Resources>
                         <Style TargetType="GridViewColumnHeader">
                             <Setter Property="Visibility" Value="Collapsed" />
@@ -70,7 +70,7 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <GridSplitter x:Name="HistoryPanelSplitter" Grid.Column="2" HorizontalAlignment="Left" Width="5" Opacity="0"/>
+                <GridSplitter x:Name="RecentPanelSplitter" Grid.Column="2" HorizontalAlignment="Left" Width="5" Opacity="0"/>
                 <ListView x:Name="Explorer" Grid.Column="1" ItemsSource="{Binding CurrentChildren}" MouseDoubleClick="Explorer_MouseDoubleClick" SelectionChanged="Explorer_SelectionChanged">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
