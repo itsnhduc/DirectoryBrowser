@@ -20,16 +20,13 @@ namespace DirectoryBrowser
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Model _dataCtx = new Model
-        {
-            CurrentPath = "Home"
-        };
+        private Model _model = new Model();
 
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = _dataCtx;
-            DirectoryTree.Items.Add(DirectoryItem.GetHome());
+            DataContext = _model;
+            DirectoryTree.Items.Add(_model.DirectoryItems);
         }
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
@@ -44,7 +41,7 @@ namespace DirectoryBrowser
 
         private void HomeBtn_Click(object sender, RoutedEventArgs e)
         {
-            _dataCtx.CurrentPath = "D:/";
+
         }
 
         private void GridViewBtn_Click(object sender, RoutedEventArgs e)
@@ -60,7 +57,8 @@ namespace DirectoryBrowser
         private void DirectoryTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             DirectoryItem selectedItem = e.NewValue as DirectoryItem;
-            _dataCtx.CurrentPath = selectedItem.GetFullPath();
+            _model.CurrentPath = selectedItem.GetFullPath();
+            _model.History.Add(selectedItem.GetFullPath());
         }
 
         private void DirectoryTree_Expanded(object sender, RoutedEventArgs e)

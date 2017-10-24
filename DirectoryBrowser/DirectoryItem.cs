@@ -12,18 +12,22 @@ namespace DirectoryBrowser
     {
         public enum ItemType { Directory, File }
         public const string LOADING_STR = "...loading...";
+        public const string HOME_NAME = "This PC";
 
-        public DirectoryItem Parent { get; set; }
-        public string Name { get; set; }
-        public ObservableCollection<DirectoryItem> Children { get; set; }
+        public DirectoryItem Parent { get; }
+        public string Name { get; }
+        public string NameInPath { get { return Name + (Type == ItemType.Directory ? "\\" : string.Empty); } }
+        public ObservableCollection<DirectoryItem> Children { get; }
+        public ItemType Type { get; }
 
         public DirectoryItem(string name, DirectoryItem parent, ItemType type)
         {
             Parent = parent;
-            switch (type)
+            Name = name;
+            Type = type;
+            switch (Type)
             {
                 case ItemType.Directory:
-                    Name = name + "\\";
                     Children = new ObservableCollection<DirectoryItem>();
                     if (name != LOADING_STR)
                     {
@@ -32,7 +36,6 @@ namespace DirectoryBrowser
                     break;
                 case ItemType.File:
                 default:
-                    Name = name;
                     break;
             }
             
@@ -40,7 +43,7 @@ namespace DirectoryBrowser
 
         public static DirectoryItem GetHome()
         {
-            DirectoryItem homeItem = new DirectoryItem("Home", null, ItemType.Directory);
+            DirectoryItem homeItem = new DirectoryItem(HOME_NAME, null, ItemType.Directory);
             homeItem.Children.Clear();
             homeItem.Children.Add(new DirectoryItem("C:", homeItem, ItemType.Directory));
             homeItem.Children.Add(new DirectoryItem("D:", homeItem, ItemType.Directory));
@@ -49,14 +52,14 @@ namespace DirectoryBrowser
 
         public string GetFullPath()
         {
-            string fullPath = Name;
+            string fullPath = NameInPath;
             DirectoryItem tmp = this;
             while (!(tmp.Parent == null))
             {
                 tmp = tmp.Parent;
-                if (tmp.Name != "Home\\")
+                if (tmp.Name != HOME_NAME)
                 {
-                    fullPath = tmp.Name + fullPath;
+                    fullPath = tmp.NameInPath + fullPath;
                 }
             }
             return fullPath;
@@ -64,7 +67,7 @@ namespace DirectoryBrowser
 
         public void LoadChildren()
         {
-            if (Name != "Home\\")
+            if (Name != HOME_NAME)
             {
                 string[] dirs = Directory.GetDirectories(GetFullPath());
                 string[] files = Directory.GetFiles(GetFullPath());

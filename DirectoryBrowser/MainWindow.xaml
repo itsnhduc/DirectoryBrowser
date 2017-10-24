@@ -63,7 +63,7 @@
                 </Grid.ColumnDefinitions>
                 <GridSplitter x:Name="Spitter" Grid.Column="1" HorizontalAlignment="Left" Width="5" Opacity="0"/>
 
-                <TreeView x:Name="DirectoryTree" BorderBrush="{x:Null}" Background="{x:Null}" TreeView.SelectedItemChanged="DirectoryTree_SelectedItemChanged" TreeViewItem.Expanded="DirectoryTree_Expanded" ItemsSource="{Binding}">
+                <TreeView x:Name="DirectoryTree" ItemsSource="{Binding DirectoryItems}" BorderBrush="{x:Null}" Background="{x:Null}" TreeView.SelectedItemChanged="DirectoryTree_SelectedItemChanged" TreeViewItem.Expanded="DirectoryTree_Expanded">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type local:DirectoryItem}" ItemsSource="{Binding Children}">
                             <TextBlock Text="{Binding Name}" />
