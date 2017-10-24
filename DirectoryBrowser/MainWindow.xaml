@@ -62,7 +62,7 @@
                     <ColumnDefinition Width="427*"/>
                     <ColumnDefinition Width="132*"/>
                 </Grid.ColumnDefinitions>
-                <GridSplitter x:Name="Spitter" Grid.Column="1" HorizontalAlignment="Left" Width="5" Opacity="0"/>
+                <GridSplitter x:Name="DirectoryTreeSpitter" Grid.Column="1" HorizontalAlignment="Left" Width="5" Opacity="0"/>
 
                 <TreeView x:Name="DirectoryTree" ItemsSource="{Binding DirectoryItems}" BorderBrush="{x:Null}" Background="{x:Null}" TreeView.SelectedItemChanged="DirectoryTree_SelectedItemChanged" TreeViewItem.Expanded="DirectoryTree_Expanded">
                     <TreeView.ItemTemplate>
@@ -71,6 +71,7 @@
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                 </TreeView>
+
                 <Border BorderBrush="LightGray" BorderThickness="0 0 1 0"/>
                 <ListView x:Name="HistoryPanel" Grid.Column="2" ItemsSource="{Binding History}" MouseUp="HistoryPanel_MouseUp" BorderBrush="LightGray" BorderThickness="1,0,0,0">
                     <ListView.Resources>
@@ -80,12 +81,23 @@
                     </ListView.Resources>
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn/>
+                            <GridViewColumn Width="300" />
                         </GridView>
                     </ListView.View>
                 </ListView>
+                <GridSplitter x:Name="HistoryPanelSplitter" Grid.Column="2" HorizontalAlignment="Left" Width="5" Opacity="0"/>
             </Grid>
-            <Grid Grid.Row="2"/>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="243*"/>
+                    <ColumnDefinition Width="517*"/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="DirectoryCount" Content="{Binding DirectoryCount}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21" FontSize="10" Width="32" Margin="10,0,0,0"/>
+                <Label x:Name="DirectoryCountLabel" Content="Directories" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21" FontSize="10" Width="72" Margin="42,0,0,0"/>
+                <Label x:Name="FileCount" Content="{Binding FileCount}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21" Width="32" Margin="129,0,0,0" FontSize="10"/>
+                <Label x:Name="FileCountLabel" Content="Files" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21" FontSize="10" Width="72" Margin="161,0,0,0"/>
+                <Label x:Name="FileSize" Content="{Binding FileSize}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21" Width="79" Margin="10,0,0,0" Grid.Column="1" FontSize="10"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

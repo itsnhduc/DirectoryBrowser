@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,9 +58,26 @@ namespace DirectoryBrowser
         private void DirectoryTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             DirectoryItem selectedItem = e.NewValue as DirectoryItem;
+            // set current path
             _model.CurrentPath = selectedItem.GetFullPath();
-            _model.History.Insert(0, selectedItem.GetFullPath());
-            selectedItem.LoadChildren();
+            if (selectedItem.Type == DirectoryItem.ItemType.Directory)
+            {
+                // update history
+                _model.History.Insert(0, selectedItem.GetFullPath());
+                // refresh children
+                selectedItem.LoadChildren();
+                // update count
+                _model.DirectoryCount = selectedItem.Children.Where(child => child.Type == DirectoryItem.ItemType.Directory).Count();
+                _model.FileCount = selectedItem.Children.Where(child => child.Type == DirectoryItem.ItemType.File).Count();
+                // update file size
+                _model.FileSize = string.Empty;
+            }
+            else
+            {
+                // update file size
+                long size = new FileInfo(selectedItem.GetFullPath()).Length;
+                _model.FileSize = FileSizeUtil.ConvertToString(size);
+            }
         }
 
         private void DirectoryTree_Expanded(object sender, RoutedEventArgs e)
