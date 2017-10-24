@@ -36,6 +36,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -64,7 +65,7 @@
     </Compile>
     <Compile Include="Model\BrowserHistory.cs" />
     <Compile Include="Model\DirectoryItem.cs" />
-    <Compile Include="Util\FileSizeUtil.cs" />
+    <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Model\AppModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -97,6 +98,13 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Img\folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\back.png" />
+    <Resource Include="Img\forward.png" />
+    <Resource Include="Img\home.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

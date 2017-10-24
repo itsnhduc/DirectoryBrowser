@@ -2,6 +2,7 @@
 using DirectoryBrowser.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -58,7 +59,7 @@ namespace DirectoryBrowser
             else
             {
                 long size = new FileInfo(item.GetFullPath()).Length;
-                _model.FileSize = FileSizeUtil.ConvertToString(size);
+                _model.FileSize = FileUtil.StringifyShort(size);
             }
         }
 
@@ -101,11 +102,20 @@ namespace DirectoryBrowser
         private void Explorer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView selectedItem = sender as ListView;
-            DirectoryItem dirItem = selectedItem.SelectedValue as DirectoryItem;
+            DirectoryItem item = selectedItem.SelectedValue as DirectoryItem;
 
-            if (dirItem != null)
+            if (item != null)
             {
-                _navigateTo(dirItem);
+                switch (item.Type)
+                {
+                    case DirectoryItem.ItemType.Directory:
+                        _navigateTo(item);
+                        break;
+                    case DirectoryItem.ItemType.File:
+                    default:
+                        Process.Start(item.GetFullPath());
+                        break;
+                }
             }
         }
 
@@ -117,7 +127,7 @@ namespace DirectoryBrowser
             if (dirItem != null && dirItem.Type == DirectoryItem.ItemType.File)
             {
                 long size = new FileInfo(dirItem.GetFullPath()).Length;
-                _model.FileSize = FileSizeUtil.ConvertToString(size);
+                _model.FileSize = FileUtil.StringifyShort(size);
             }
         }
 

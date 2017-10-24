@@ -14,34 +14,23 @@
                 <RowDefinition Height="483*"/>
                 <RowDefinition Height="24*"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Margin="0,10,0,5" >
+            <Grid Grid.Row="0" Margin="-10,10,10,5" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="500*"/>
+                    <ColumnDefinition Width="Auto" MinWidth="137"/>
+                    <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="BackBtn" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Center" Height="35" Width="35" HorizontalContentAlignment="Center" Click="BackBtn_Click" >
-                    <Viewbox VerticalAlignment="Center">
-                        <Canvas Width="24" Height="24">
-                            <Path Data="M20,10V14H11L14.5,17.5L12.08,19.92L4.16,12L12.08,4.08L14.5,6.5L11,10H20Z" Fill="Black" />
-                        </Canvas>
-                    </Viewbox>
+                <Button x:Name="BackBtn" HorizontalAlignment="Left" Margin="15,0,0,10" VerticalAlignment="Center" Height="35" Width="35" HorizontalContentAlignment="Center" Click="BackBtn_Click" BorderBrush="{x:Null}" Background="{x:Null}" >
+                    <Image Source="Img/back.png" />
                 </Button>
-                <Button x:Name="ForwardBtn" HorizontalAlignment="Left" Margin="50,0,0,10" VerticalAlignment="Center" Height="35" Width="35" HorizontalContentAlignment="Center" Click="ForwardBtn_Click" >
-                    <Viewbox VerticalAlignment="Center">
-                        <Canvas Width="24" Height="24">
-                            <Path Data="M4,10V14H13L9.5,17.5L11.92,19.92L19.84,12L11.92,4.08L9.5,6.5L13,10H4Z" Fill="Black" />
-                        </Canvas>
-                    </Viewbox>
+                <Button x:Name="ForwardBtn" HorizontalAlignment="Left" Margin="55,0,0,10" VerticalAlignment="Center" Height="35" Width="35" HorizontalContentAlignment="Center" Click="ForwardBtn_Click" BorderBrush="{x:Null}" Background="{x:Null}" >
+                    <Image Source="Img/forward.png" />
                 </Button>
-                <Button x:Name="HomeBtn" HorizontalAlignment="Left" Margin="90,0,0,10" VerticalAlignment="Center" Height="35" Width="35" HorizontalContentAlignment="Center" Click="HomeBtn_Click" >
-                    <Viewbox VerticalAlignment="Center">
-                        <Canvas Width="24" Height="24">
-                            <Path Data="M8,20H5V12H2L12,3L22,12H19V20H12V14H8V20M14,14V17H17V14H14Z" Fill="Black" />
-                        </Canvas>
-                    </Viewbox>
+                <Button x:Name="HomeBtn" HorizontalAlignment="Left" Margin="95,0,0,10" VerticalAlignment="Center" Height="35" Width="35" HorizontalContentAlignment="Center" Click="HomeBtn_Click" Background="{x:Null}" BorderBrush="{x:Null}" >
+                    <Image Source="Img/home.png" />
                 </Button>
-                <TextBox Text="{Binding CurrentPath, UpdateSourceTrigger=PropertyChanged}" x:Name="AddressBar" Height="35" Margin="9,0,10,10" TextWrapping="Wrap" VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" RenderTransformOrigin="0.5,0.5" KeyDown="AddressBar_KeyDown" />
+                <TextBox Text="{Binding CurrentPath, UpdateSourceTrigger=PropertyChanged}" x:Name="AddressBar" Height="35" Margin="9,0,0,10" TextWrapping="Wrap" VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" RenderTransformOrigin="0.5,0.5" KeyDown="AddressBar_KeyDown" />
+                <Border BorderBrush="LightGray" BorderThickness="0 0 0 1" Grid.ColumnSpan="3" Margin="10,0,-10,0"/>
             </Grid>
             <Grid Grid.Row="1" Margin="0,5,0,10" >
                 <Grid.ColumnDefinitions>
@@ -53,7 +42,10 @@
                 <TreeView x:Name="DirectoryTree" ItemsSource="{Binding HomeDirectory}" BorderBrush="{x:Null}" Background="{x:Null}" TreeView.SelectedItemChanged="DirectoryTree_SelectedItemChanged" TreeViewItem.Expanded="DirectoryTree_Expanded">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type model:DirectoryItem}" ItemsSource="{Binding Children}">
-                            <TextBlock Text="{Binding Name}" />
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding ItemIcon}" Width="15" Height="15" />
+                                <TextBlock Text="{Binding Name}" />
+                            </StackPanel>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                 </TreeView>
@@ -80,6 +72,13 @@
                     </ListView.ItemContainerStyle>
                     <ListView.View>
                         <GridView>
+                            <GridViewColumn Width="30">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding ItemIcon}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                             <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="300" />
                             <GridViewColumn Header="Size" Width="100">
                                 <GridViewColumn.CellTemplate>

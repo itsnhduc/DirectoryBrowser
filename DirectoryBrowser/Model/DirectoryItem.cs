@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace DirectoryBrowser.Model
 {
@@ -23,6 +25,7 @@ namespace DirectoryBrowser.Model
         public string Size { get; }
         public DateTime DateCreated { get; }
         public DateTime DateModified { get; }
+        public ImageSource ItemIcon { get; }
 
         public DirectoryItem(string name, DirectoryItem parent, ItemType type)
         {
@@ -40,14 +43,20 @@ namespace DirectoryBrowser.Model
                     {
                         Children.Add(new DirectoryItem(LOADING_STR, null, ItemType.Directory));
                     }
+
                     Size = string.Empty;
+
+                    Bitmap bitmapIcon = new Bitmap("..\\..\\Img\\folder.png");
+                    ItemIcon = FileUtil.ToImageSource(bitmapIcon);
                     break;
                 case ItemType.File:
                 default:
-                    Size = FileSizeUtil.ConvertToString(fileInfo.Length);
+                    Size = FileUtil.StringifyShort(fileInfo.Length);
+
+                    Icon icon = Icon.ExtractAssociatedIcon(GetFullPath());
+                    ItemIcon = FileUtil.ToImageSource(icon);
                     break;
             }
-            
         }
 
         public static DirectoryItem GetHome()
