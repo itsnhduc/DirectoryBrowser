@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DirectoryBrowser
+namespace DirectoryBrowser.Model
 {
-    class Model : INotifyPropertyChanged
+    class AppModel : INotifyPropertyChanged
     {
         private ObservableCollection<string> _recent;
         private ObservableCollection<DirectoryItem> _curChildren;
@@ -26,7 +26,7 @@ namespace DirectoryBrowser
         public string FileSize { get { return _fileSize; } set { _fileSize = value; NotifyPropertyChanged("FileSize"); } }
         public DirectoryItem HomeDirectory { get { return _dirItems; } set { _dirItems = value; NotifyPropertyChanged("DirectoryItems"); } }
         
-        public Model()
+        public AppModel()
         {
             _recent = new ObservableCollection<string>();
             _dirItems = DirectoryItem.GetHome();

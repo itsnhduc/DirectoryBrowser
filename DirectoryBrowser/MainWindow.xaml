@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DirectoryBrowser"
+        xmlns:model="clr-namespace:DirectoryBrowser.Model"
         mc:Ignorable="d"
         Title="Directory Browser" FontFamily="Verdana">
     <Grid>
@@ -51,7 +52,7 @@
 
                 <TreeView x:Name="DirectoryTree" ItemsSource="{Binding HomeDirectory}" BorderBrush="{x:Null}" Background="{x:Null}" TreeView.SelectedItemChanged="DirectoryTree_SelectedItemChanged" TreeViewItem.Expanded="DirectoryTree_Expanded">
                     <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type local:DirectoryItem}" ItemsSource="{Binding Children}">
+                        <HierarchicalDataTemplate DataType="{x:Type model:DirectoryItem}" ItemsSource="{Binding Children}">
                             <TextBlock Text="{Binding Name}" />
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
@@ -103,7 +104,7 @@
                 <Label x:Name="DirectoryCountLabel" Content="Directories" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21" FontSize="10" Width="72" Margin="42,0,0,0"/>
                 <Label x:Name="FileCount" Content="{Binding FileCount}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21" Width="32" Margin="129,0,0,0" FontSize="10"/>
                 <Label x:Name="FileCountLabel" Content="Files" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21" FontSize="10" Width="72" Margin="161,0,0,0"/>
-                <Label x:Name="FileSize" Content="{Binding FileSize}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21" Width="79" Margin="10,0,0,0" Grid.Column="1" FontSize="10"/>
+                <Label x:Name="FileSize" Content="{Binding FileSize}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="21" Width="79" Margin="0,0,10,0" Grid.Column="1" FontSize="10" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
             </Grid>
         </Grid>
     </Grid>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DirectoryBrowser.Model;
+using DirectoryBrowser.Util;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,7 +23,8 @@ namespace DirectoryBrowser
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Model _model = new Model();
+        private AppModel _model = new AppModel();
+        private BrowserHistory _history = new BrowserHistory();
 
         public MainWindow()
         {
@@ -30,7 +33,7 @@ namespace DirectoryBrowser
             DirectoryTree.Items.Add(_model.HomeDirectory);
         }
 
-        private void _navigateTo(DirectoryItem item)
+        private void _navigateTo(DirectoryItem item, bool addToHistory = true)
         {
             // set current path
             _model.CurrentPath = item.GetFullPath();
@@ -49,6 +52,8 @@ namespace DirectoryBrowser
                 _model.FileCount = item.Children.Where(child => child.Type == DirectoryItem.ItemType.File).Count();
 
                 _model.FileSize = string.Empty;
+
+                if (addToHistory) _history.Add(item);
             }
             else
             {
@@ -59,12 +64,14 @@ namespace DirectoryBrowser
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
         {
-            // wip: navigate to directory (from history)
+            DirectoryItem target = _history.Back();
+            if (target != null) _navigateTo(target, false);
         }
 
         private void ForwardBtn_Click(object sender, RoutedEventArgs e)
         {
-            // wip: navigate to directory (from history)
+            DirectoryItem target = _history.Forward();
+            if (target != null) _navigateTo(target, false);
         }
 
         private void HomeBtn_Click(object sender, RoutedEventArgs e)
