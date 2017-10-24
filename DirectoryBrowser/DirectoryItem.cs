@@ -19,12 +19,18 @@ namespace DirectoryBrowser
         public string NameInPath { get { return Name + (Type == ItemType.Directory ? "\\" : string.Empty); } }
         public ObservableCollection<DirectoryItem> Children { get; }
         public ItemType Type { get; }
+        public string Size { get; }
+        public DateTime DateCreated { get; }
+        public DateTime DateModified { get; }
 
         public DirectoryItem(string name, DirectoryItem parent, ItemType type)
         {
             Parent = parent;
             Name = name;
             Type = type;
+            FileInfo fileInfo = new FileInfo(GetFullPath());
+            DateCreated = fileInfo.CreationTime;
+            DateModified = fileInfo.LastWriteTime;
             switch (Type)
             {
                 case ItemType.Directory:
@@ -33,9 +39,11 @@ namespace DirectoryBrowser
                     {
                         Children.Add(new DirectoryItem(LOADING_STR, null, ItemType.Directory));
                     }
+                    Size = string.Empty;
                     break;
                 case ItemType.File:
                 default:
+                    Size = FileSizeUtil.ConvertToString(fileInfo.Length);
                     break;
             }
             

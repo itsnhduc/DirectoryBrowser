@@ -40,20 +40,6 @@
                         </Canvas>
                     </Viewbox>
                 </Button>
-                <Button x:Name="GridViewBtn" HorizontalAlignment="Right" Margin="0,0,50,10" VerticalAlignment="Center" Height="35" Width="35" HorizontalContentAlignment="Center" Grid.Column="2" Click="GridViewBtn_Click" >
-                    <Viewbox VerticalAlignment="Center">
-                        <Canvas Width="24" Height="24">
-                            <Path Data="M3,11H11V3H3M3,21H11V13H3M13,21H21V13H13M13,3V11H21V3" Fill="Black" />
-                        </Canvas>
-                    </Viewbox>
-                </Button>
-                <Button x:Name="ListViewBtn" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Center" Height="35" Width="35" HorizontalContentAlignment="Center" Grid.Column="2" Click="ListViewBtn_Click" >
-                    <Viewbox VerticalAlignment="Center">
-                        <Canvas Width="24" Height="24">
-                            <Path Data="M9,5V9H21V5M9,19H21V15H9M9,14H21V10H9M4,9H8V5H4M4,19H8V15H4M4,14H8V10H4V14Z" Fill="Black" />
-                        </Canvas>
-                    </Viewbox>
-                </Button>
                 <TextBox Text="{Binding CurrentPath, UpdateSourceTrigger=PropertyChanged}" x:Name="AddressBar" Height="35" Margin="9,0,10,10" TextWrapping="Wrap" VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" RenderTransformOrigin="0.5,0.5" />
             </Grid>
             <Grid Grid.Row="1" Margin="0,5,0,10" >
@@ -62,9 +48,8 @@
                     <ColumnDefinition Width="427*"/>
                     <ColumnDefinition Width="132*"/>
                 </Grid.ColumnDefinitions>
-                <GridSplitter x:Name="DirectoryTreeSpitter" Grid.Column="1" HorizontalAlignment="Left" Width="5" Opacity="0"/>
 
-                <TreeView x:Name="DirectoryTree" ItemsSource="{Binding DirectoryItems}" BorderBrush="{x:Null}" Background="{x:Null}" TreeView.SelectedItemChanged="DirectoryTree_SelectedItemChanged" TreeViewItem.Expanded="DirectoryTree_Expanded">
+                <TreeView x:Name="DirectoryTree" ItemsSource="{Binding HomeDirectory}" BorderBrush="{x:Null}" Background="{x:Null}" TreeView.SelectedItemChanged="DirectoryTree_SelectedItemChanged" TreeViewItem.Expanded="DirectoryTree_Expanded">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type local:DirectoryItem}" ItemsSource="{Binding Children}">
                             <TextBlock Text="{Binding Name}" />
@@ -86,6 +71,28 @@
                     </ListView.View>
                 </ListView>
                 <GridSplitter x:Name="HistoryPanelSplitter" Grid.Column="2" HorizontalAlignment="Left" Width="5" Opacity="0"/>
+                <ListView x:Name="Explorer" Grid.Column="1" ItemsSource="{Binding CurrentChildren}" MouseDoubleClick="Explorer_MouseDoubleClick" SelectionChanged="Explorer_SelectionChanged">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="300" />
+                            <GridViewColumn Header="Size" Width="100">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Size}" TextAlignment="Right"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Date Created" DisplayMemberBinding="{Binding Path=DateCreated, StringFormat='dd/MM/yyyy HH:mm:ss'}" Width="200" />
+                            <GridViewColumn Header="Date Modified" DisplayMemberBinding="{Binding Path=DateModified, StringFormat='dd/MM/yyyy HH:mm:ss'}" Width="200" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <GridSplitter x:Name="DirectoryTreeSplitter" HorizontalAlignment="Left" Width="5" Grid.Column="1" Opacity="0"/>
             </Grid>
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>

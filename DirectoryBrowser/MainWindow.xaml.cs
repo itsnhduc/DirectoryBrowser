@@ -27,57 +27,52 @@ namespace DirectoryBrowser
         {
             InitializeComponent();
             DataContext = _model;
-            DirectoryTree.Items.Add(_model.DirectoryItems);
+            DirectoryTree.Items.Add(_model.HomeDirectory);
+        }
+
+        private void _navigateTo(DirectoryItem item)
+        {
+            // set current path
+            _model.CurrentPath = item.GetFullPath();
+            if (item.Type == DirectoryItem.ItemType.Directory)
+            {
+                _model.CurrentChildren = item.Children;
+
+                _model.History.Insert(0, item.GetFullPath());
+
+                item.LoadChildren();
+
+                _model.DirectoryCount = item.Children.Where(child => child.Type == DirectoryItem.ItemType.Directory).Count();
+                _model.FileCount = item.Children.Where(child => child.Type == DirectoryItem.ItemType.File).Count();
+
+                _model.FileSize = string.Empty;
+            }
+            else
+            {
+                long size = new FileInfo(item.GetFullPath()).Length;
+                _model.FileSize = FileSizeUtil.ConvertToString(size);
+            }
         }
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            // navigate to directory (from history)
         }
 
         private void ForwardBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            // navigate to directory (from history)
         }
 
         private void HomeBtn_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void GridViewBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ListViewBtn_Click(object sender, RoutedEventArgs e)
-        {
-
+            _navigateTo(_model.HomeDirectory);
         }
 
         private void DirectoryTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             DirectoryItem selectedItem = e.NewValue as DirectoryItem;
-            // set current path
-            _model.CurrentPath = selectedItem.GetFullPath();
-            if (selectedItem.Type == DirectoryItem.ItemType.Directory)
-            {
-                // update history
-                _model.History.Insert(0, selectedItem.GetFullPath());
-                // refresh children
-                selectedItem.LoadChildren();
-                // update count
-                _model.DirectoryCount = selectedItem.Children.Where(child => child.Type == DirectoryItem.ItemType.Directory).Count();
-                _model.FileCount = selectedItem.Children.Where(child => child.Type == DirectoryItem.ItemType.File).Count();
-                // update file size
-                _model.FileSize = string.Empty;
-            }
-            else
-            {
-                // update file size
-                long size = new FileInfo(selectedItem.GetFullPath()).Length;
-                _model.FileSize = FileSizeUtil.ConvertToString(size);
-            }
+            _navigateTo(selectedItem);
         }
 
         private void DirectoryTree_Expanded(object sender, RoutedEventArgs e)
@@ -90,6 +85,29 @@ namespace DirectoryBrowser
         {
             ListView selectedItem = sender as ListView;
             _model.CurrentPath = selectedItem.SelectedItem as string;
+        }
+
+        private void Explorer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ListView selectedItem = sender as ListView;
+            DirectoryItem dirItem = selectedItem.SelectedValue as DirectoryItem;
+
+            if (dirItem != null)
+            {
+                _navigateTo(dirItem);
+            }
+        }
+
+        private void Explorer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListView selectedItem = sender as ListView;
+            DirectoryItem dirItem = selectedItem.SelectedValue as DirectoryItem;
+
+            if (dirItem != null && dirItem.Type == DirectoryItem.ItemType.File)
+            {
+                long size = new FileInfo(dirItem.GetFullPath()).Length;
+                _model.FileSize = FileSizeUtil.ConvertToString(size);
+            }
         }
     }
 }

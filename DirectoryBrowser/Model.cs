@@ -11,6 +11,7 @@ namespace DirectoryBrowser
     class Model : INotifyPropertyChanged
     {
         private ObservableCollection<string> _history;
+        private ObservableCollection<DirectoryItem> _curChildren;
         private string _currentPath;
         private int _dirCount;
         private int _fileCount;
@@ -18,13 +19,13 @@ namespace DirectoryBrowser
         private DirectoryItem _dirItems;
 
         public ObservableCollection<string> History { get { return _history; } set { _history = value; NotifyPropertyChanged("History"); } }
+        public ObservableCollection<DirectoryItem> CurrentChildren { get { return _curChildren; } set { _curChildren = value; NotifyPropertyChanged("CurrentChildren"); } }
         public string CurrentPath { get { return _currentPath; } set { _currentPath = value; NotifyPropertyChanged("CurrentPath"); } }
         public int DirectoryCount { get { return _dirCount; } set { _dirCount = value; NotifyPropertyChanged("DirectoryCount"); } }
         public int FileCount { get { return _fileCount; } set { _fileCount = value; NotifyPropertyChanged("FileCount"); } }
         public string FileSize { get { return _fileSize; } set { _fileSize = value; NotifyPropertyChanged("FileSize"); } }
-        public DirectoryItem DirectoryItems { get { return _dirItems; } set { _dirItems = value; NotifyPropertyChanged("DirectoryItems"); } }
-
-
+        public DirectoryItem HomeDirectory { get { return _dirItems; } set { _dirItems = value; NotifyPropertyChanged("DirectoryItems"); } }
+        
         public Model()
         {
             _history = new ObservableCollection<string>();
