@@ -90,5 +90,28 @@ namespace DirectoryBrowser
                 }
             }
         }
+
+        public DirectoryItem SearchRelativePath(string path)
+        {
+            DirectoryItem result = this;
+            foreach (string dirName in path.Split('\\'))
+            {
+                if (dirName != string.Empty)
+                {
+                    var filteredChildren = result.Children.Where(child => {
+                        return child.Name == dirName;
+                    });
+                    if (filteredChildren.Count() > 0)
+                    {
+                        result = filteredChildren.First();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            return result;
+        }
     }
 }

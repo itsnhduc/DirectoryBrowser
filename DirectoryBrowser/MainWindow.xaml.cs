@@ -109,5 +109,17 @@ namespace DirectoryBrowser
                 _model.FileSize = FileSizeUtil.ConvertToString(size);
             }
         }
+
+        private void AddressBar_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                DirectoryItem targetItem = _model.HomeDirectory.SearchRelativePath(AddressBar.Text);
+                if (targetItem != null)
+                {
+                    _navigateTo(targetItem);
+                }
+            }
+        }
     }
 }

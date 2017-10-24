@@ -40,7 +40,7 @@
                         </Canvas>
                     </Viewbox>
                 </Button>
-                <TextBox Text="{Binding CurrentPath, UpdateSourceTrigger=PropertyChanged}" x:Name="AddressBar" Height="35" Margin="9,0,10,10" TextWrapping="Wrap" VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" RenderTransformOrigin="0.5,0.5" />
+                <TextBox Text="{Binding CurrentPath, UpdateSourceTrigger=PropertyChanged}" x:Name="AddressBar" Height="35" Margin="9,0,10,10" TextWrapping="Wrap" VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" RenderTransformOrigin="0.5,0.5" KeyDown="AddressBar_KeyDown" />
             </Grid>
             <Grid Grid.Row="1" Margin="0,5,0,10" >
                 <Grid.ColumnDefinitions>
