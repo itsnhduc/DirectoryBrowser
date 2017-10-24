@@ -34,7 +34,7 @@ namespace DirectoryBrowser
             DirectoryTree.Items.Add(_model.HomeDirectory);
         }
 
-        private void _navigateTo(DirectoryItem item, bool addToHistory = true)
+        private void _navigateTo(DirectoryItem item, bool isHistoryNav = false)
         {
             // set current path
             _model.CurrentPath = item.GetFullPath();
@@ -47,14 +47,14 @@ namespace DirectoryBrowser
                     _model.Recent.Insert(0, item.GetFullPath());
                 }
 
-                item.LoadChildren();
+                if (!isHistoryNav) item.RefreshChildren();
 
                 _model.DirectoryCount = item.Children.Where(child => child.Type == DirectoryItem.ItemType.Directory).Count();
                 _model.FileCount = item.Children.Where(child => child.Type == DirectoryItem.ItemType.File).Count();
 
                 _model.FileSize = string.Empty;
 
-                if (addToHistory) _history.Add(item);
+                if (!isHistoryNav) _history.Add(item);
             }
             else
             {
@@ -66,13 +66,13 @@ namespace DirectoryBrowser
         private void BackBtn_Click(object sender, RoutedEventArgs e)
         {
             DirectoryItem target = _history.Back();
-            if (target != null) _navigateTo(target, false);
+            if (target != null) _navigateTo(target, true);
         }
 
         private void ForwardBtn_Click(object sender, RoutedEventArgs e)
         {
             DirectoryItem target = _history.Forward();
-            if (target != null) _navigateTo(target, false);
+            if (target != null) _navigateTo(target, true);
         }
 
         private void HomeBtn_Click(object sender, RoutedEventArgs e)
@@ -89,7 +89,7 @@ namespace DirectoryBrowser
         private void DirectoryTree_Expanded(object sender, RoutedEventArgs e)
         {
             DirectoryItem expandedItem = (e.OriginalSource as TreeViewItem).Header as DirectoryItem;
-            expandedItem.LoadChildren();
+            expandedItem.RefreshChildren();
         }
 
         private void RecentPanel_MouseUp(object sender, MouseButtonEventArgs e)

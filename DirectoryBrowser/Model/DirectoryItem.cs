@@ -85,7 +85,7 @@ namespace DirectoryBrowser.Model
             return fullPath;
         }
 
-        public void LoadChildren()
+        public void RefreshChildren()
         {
             if (Name != HOME_NAME)
             {
@@ -106,6 +106,7 @@ namespace DirectoryBrowser.Model
         public DirectoryItem SearchRelativePath(string path)
         {
             DirectoryItem result = this;
+            result.RefreshChildren();
             foreach (string dirName in path.Split('\\'))
             {
                 if (dirName != string.Empty)
