@@ -58,8 +58,9 @@
             </Grid>
             <Grid Grid.Row="1" Margin="0,5,0,10" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="59*"/>
-                    <ColumnDefinition Width="164*"/>
+                    <ColumnDefinition Width="201*"/>
+                    <ColumnDefinition Width="427*"/>
+                    <ColumnDefinition Width="132*"/>
                 </Grid.ColumnDefinitions>
                 <GridSplitter x:Name="Spitter" Grid.Column="1" HorizontalAlignment="Left" Width="5" Opacity="0"/>
 
@@ -71,6 +72,18 @@
                     </TreeView.ItemTemplate>
                 </TreeView>
                 <Border BorderBrush="LightGray" BorderThickness="0 0 1 0"/>
+                <ListView x:Name="HistoryPanel" Grid.Column="2" ItemsSource="{Binding History}" MouseUp="HistoryPanel_MouseUp" BorderBrush="LightGray" BorderThickness="1,0,0,0">
+                    <ListView.Resources>
+                        <Style TargetType="GridViewColumnHeader">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
             </Grid>
             <Grid Grid.Row="2"/>
         </Grid>

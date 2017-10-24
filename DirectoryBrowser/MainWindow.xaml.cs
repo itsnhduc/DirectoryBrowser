@@ -58,13 +58,20 @@ namespace DirectoryBrowser
         {
             DirectoryItem selectedItem = e.NewValue as DirectoryItem;
             _model.CurrentPath = selectedItem.GetFullPath();
-            _model.History.Add(selectedItem.GetFullPath());
+            _model.History.Insert(0, selectedItem.GetFullPath());
+            selectedItem.LoadChildren();
         }
 
         private void DirectoryTree_Expanded(object sender, RoutedEventArgs e)
         {
             DirectoryItem expandedItem = (e.OriginalSource as TreeViewItem).Header as DirectoryItem;
             expandedItem.LoadChildren();
+        }
+
+        private void HistoryPanel_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            ListView selectedItem = sender as ListView;
+            _model.CurrentPath = selectedItem.SelectedItem as string;
         }
     }
 }
